@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring.baegopang.xml.muz">
+	<!-- 회원가입 insert --> 
+	<insert id="insertMuz" parameterType="muz">
+		INSERT INTO MUZ
+		VALUES(#{id}, #{pw}, #{name}, #{nickname}, #{tel}, #{picture})
+	</insert>
+	
+	<!-- 로그인 pw 가져오기 -->
+	<select id="loginProcess" parameterType="java.lang.String" resultType="muz">
+		SELECT id, pw, name, nickname, tel, picture
+		FROM MUZ
+		WHERE ID = #{id}
+	</select>
+</mapper>

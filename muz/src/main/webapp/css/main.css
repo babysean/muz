@@ -1,0 +1,23 @@
+@charset "UTF-8";
+body { padding-top: 180px; }
+#logoDiv { padding: 15px; }
+#logoutBtn, #loginBtn, #loginDiv, #editBtn { width: 100%; }
+.menuText { color: #2F79BA; }
+.marked { color: #2F79BA; }
+#signupA { text-decoration: none; }
+#signupDiv { width: 100%; text-align: right; }
+.rowDiv { padding: 15px; }
+.barNav { background-color: white; }
+.barDiv { background-color: #2F79BA;}
+.barText { color: white; }
+table{ width: 100%; }
+table td { padding: 5px; }
+table thead tr th, .centerTd { text-align: center; }
+.Smallplus { float: right; color: gray; }
+.careerDiv, .locationDiv { color: #AAAAAA; }
+.crewSeeDiv, .marketSeeDiv { float: right; color: #2F79BA; }
+.crewPerson, .marketPerson { color: #D2443C; }
+.productDiv:hover { border: 3px solid #2F79BA; }
+.marketPriceDiv { color: #DB0000; }
+.writeDiv { float: right; }
+.detailBar { background-color: red; width: 100%;}

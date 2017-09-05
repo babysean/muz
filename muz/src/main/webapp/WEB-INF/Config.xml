@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration><!-- DB설정(Connection) -->
+	<typeAliases>
+		<typeAlias type="spring.muz.bean.MuzBean" alias="muz"/>
+		<typeAlias type="spring.muz.bean.BoardBean" alias="board"/>
+		<typeAlias type="spring.muz.bean.BoardReplyBean" alias="boardReply"/>
+		<typeAlias type="spring.muz.bean.ExistenceBean" alias="existence"/>
+		<typeAlias type="spring.muz.bean.ExistenceReplyBean" alias="existenceReply"/>
+		<typeAlias type="spring.muz.bean.MarketBean" alias="market"/>
+	</typeAliases>
+	<mappers>
+		<mapper resource="spring/muz/xml/muz.xml" />
+		<mapper resource="spring/muz/xml/board.xml"/>
+		<mapper resource="spring/muz/xml/boardReply.xml"/>
+		<mapper resource="spring/muz/xml/existence.xml"/>
+		<mapper resource="spring/muz/xml/existenceReply.xml"/>
+		<mapper resource="spring/muz/xml/market.xml" />
+	</mappers>
+</configuration>

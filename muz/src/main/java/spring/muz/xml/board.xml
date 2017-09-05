@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring.baegopang.xml.board">
+	<!-- 게시판 모두 가져오기 -->
+	<sql id="allBoard">
+		SELECT ROW_NUMBER() OVER(ORDER BY NO DESC)RM, NO, TITLE, WRITER, CONTENTS, REGDATE, HIT, LIKES, LIKEPEOPLE
+		FROM BOARD
+	</sql>
+	
+	<select id="selectBoard" resultType="board">
+		SELECT RM, NO, TITLE, WRITER, TO_CHAR(REGDATE, 'yyyy-MM-dd')REGDATE, HIT, LIKES
+		FROM ( <include refid="allBoard"/> )
+		<if test="start!=null">
+			<where>
+				RM BETWEEN #{start} AND #{end}
+			</where>
+		</if>
+		ORDER BY NO DESC
+	</select>
+	
+	<!-- 메인 페이지에 뿌려질 게시판 5개 가져오기 -->
+	<select id="mainPageBoard" resultType="board">
+		SELECT RM, TITLE, TO_CHAR(REGDATE, 'yy-MM-dd')REGDATE
+		FROM ( <include refid="allBoard"/> )
+		<where>
+			RM <![CDATA[ < ]]> 6
+		</where>
+	</select>
+	
+	<!-- board 게시판 총 행 가져오기 -->
+	<select id="getBoardTotalRow" resultType="java.lang.Integer">
+		SELECT COUNT(NO)
+		FROM BOARD
+	</select>
+	
+	<!-- board 등록하기 -->
+	<insert id="insertBoard" parameterType="board">
+		INSERT INTO BOARD
+		VALUES (seq_board.nextval, #{title}, #{writer}, #{contents}, SYSDATE, 0, 0 , ' ')
+	</insert>
+	
+	<!-- board 1개 정보 가져오기 -->
+	<select id="selectOneBoard" parameterType="java.lang.Integer" resultType="board">
+		SELECT NO, TITLE, WRITER, CONTENTS, REGDATE, HIT, LIKES, LIKEPEOPLE
+		FROM BOARD
+		WHERE NO = #{no}
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateBoardHit" parameterType="java.lang.Integer">
+		UPDATE BOARD
+		SET HIT = HIT + 1
+		WHERE NO = #{no}
+	</update>
+	
+	<!-- 좋아요 -->
+	<update id="boardLikeClick" parameterType="java.util.HashMap">
+		UPDATE BOARD
+		SET
+		LIKEPEOPLE = LIKEPEOPLE||'/'||#{id},
+		LIKES = LIKES + 1
+		WHERE NO = #{no}
+	</update>
+	
+	<!-- 좋아요 취소 -->
+	<update id="boardUnlikeClick" parameterType="java.util.HashMap">
+		UPDATE BOARD
+		SET
+		LIKEPEOPLE = #{people},
+		LIKES = LIKES - 1
+		WHERE NO = #{no}
+	</update>
+	
+	<!-- 해당 번호 게시판의 좋아요를 누른 사람 가져오기 -->
+	<select id="selectLikePeople" parameterType="java.lang.Integer" resultType="java.lang.String">
+		SELECT LIKEPEOPLE
+		FROM BOARD
+		WHERE NO = #{no}
+	</select>
+</mapper>

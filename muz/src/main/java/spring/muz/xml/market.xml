@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring.baegopang.xml.muz">
+	<sql id="allMarket">
+		SELECT ROW_NUMBER() OVER(ORDER BY NO DESC)RM, NO, TITLE, WRITER, CONTENTS, TEL, PRICE, LOCATION, HIT, STATE, PICTURE, REGDATE
+		FROM MARKET
+	</sql>
+
+	<!-- 등록된 상품 가져오기 -->
+	<select id="selectMarket" resultType="market">
+		<include refid="allMarket"/>
+	</select>
+	
+	<!-- 상품등록 -->
+	<insert id="insertMarket" parameterType="market">
+		INSERT INTO MARKET
+		VALUES(seq_market.nextval, #{title}, #{writer}, #{contents}, #{tel}, #{price}, #{location}, 0, '대기', #{picture}, SYSDATE)
+	</insert>
+	
+	<!--  -->
+	<select id="mainPageMarket" resultType="market">
+		SELECT RM, TITLE, TO_CHAR(REGDATE, 'yy-MM-dd')REGDATE
+		FROM ( <include refid="allMarket"/> )
+		<where>
+			RM <![CDATA[ < ]]> 6
+		</where>
+	</select>
+</mapper>

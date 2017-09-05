@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring.baegopang.xml.existence">
+	<!-- 자작곡 게시판 모두 가져오기 -->
+	<sql id="allExistence">
+		SELECT ROW_NUMBER() OVER(ORDER BY NO DESC)RM, NO, TITLE, WRITER, CONTENTS, MUSIC, REGDATE, HIT, LIKES, UNLIKES, LIKEPEOPLE, UNLIKEPEOPLE
+		FROM EXISTENCE
+	</sql>
+	
+	<select id="selectExistence" resultType="existence">
+		SELECT RM, NO, TITLE, WRITER, TO_CHAR(REGDATE, 'yyyy-MM-dd')REGDATE, HIT, LIKES
+		FROM ( <include refid="allExistence"/> )
+		<if test="start!=null">
+			<where>
+				RM BETWEEN #{start} AND #{end}
+			</where>
+		</if>
+		ORDER BY LIKES DESC, NO DESC
+	</select>
+	
+	<!-- 메인페이지에 뿌려줄 최신 자작곡 5개 가져오기 -->
+	<select id="mainPageExistence" resultType="existence">
+		SELECT RM, TITLE, TO_CHAR(REGDATE, 'yy-MM-dd')REGDATE
+		FROM ( <include refid="allExistence"/> )
+		<where>
+			RM <![CDATA[ < ]]> 6
+		</where>
+	</select>
+	
+	<!-- 자작곡 게시판 총 행 가져오기 -->
+	<select id="getExistenceTotalRow" resultType="java.lang.Integer">
+		SELECT COUNT(NO)
+		FROM EXISTENCE
+	</select>
+	
+	<!-- 자작곡 등록 -->
+	<insert id="insertExistence" parameterType="existence">
+		INSERT INTO EXISTENCE
+		VALUES (seq_existence.nextval, #{title}, #{writer}, #{contents}, #{music}, SYSDATE, 0, 0, 0, ' ',' ')
+	</insert>
+	
+	<!-- 해당 번호 자작곡 정보 가져오기 -->
+	<select id="selectOneExistence" parameterType="java.lang.Integer" resultType="existence">
+		SELECT NO, TITLE, WRITER, CONTENTS, MUSIC, REGDATE, HIT, LIKES, UNLIKES, LIKEPEOPLE, UNLIKEPEOPLE
+		FROM EXISTENCE
+		WHERE NO = #{no}
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateExistenceHit" parameterType="java.lang.Integer">
+		UPDATE EXISTENCE
+		SET HIT = HIT + 1
+		WHERE NO = #{no}
+	</update>
+	
+	<!-- 해당 번호 좋아요를 누른 사람들 가져오기 -->
+	<select id="selectExistenceLikePeople" parameterType="java.lang.Integer" resultType="java.lang.String">
+		SELECT LIKEPEOPLE
+		FROM EXISTENCE
+		WHERE NO = #{no}
+	</select>
+	
+	<!-- 해당 번호 싫어요를 누른 사람들 가져오기 -->
+	<select id="selectExistenceUnLikePeople" parameterType="java.lang.Integer" resultType="java.lang.String">
+		SELECT UNLIKEPEOPLE
+		FROM EXISTENCE
+		WHERE NO = #{no}
+	</select>
+	
+	<!-- 해당 번호 좋아요 -->
+	<update id="updateExistenceLikeProcess" parameterType="java.util.HashMap">
+		UPDATE EXISTENCE
+		SET 
+		LIKEPEOPLE = LIKEPEOPLE||'/'||#{id},
+		LIKES = LIKES + 1
+		WHERE NO = #{no}
+	</update>
+	
+	<!-- 해당 번호 좋아요 취소 -->
+	<update id="updateExistenceLikeCancelProcess" parameterType="java.util.HashMap">
+		UPDATE EXISTENCE
+		SET
+		LIKEPEOPLE = #{people},
+		LIKES = LIKES - 1
+		WHERE NO = #{no}
+	</update>
+	
+	<!-- 해당 번호 싫어요 -->
+	<update id="updateExistenceUnLikeProcess" parameterType="java.util.HashMap">
+		UPDATE EXISTENCE
+		SET
+		UNLIKEPEOPLE = UNLIKEPEOPLE||'/'||#{id},
+		UNLIKES = UNLIKES + 1
+		WHERE NO = #{no}
+	</update>
+	
+	<!-- 해당 번호 싫어요 취소 -->
+	<update id="updateExistenceUnLikeCancelProcess" parameterType="java.util.HashMap">
+		UPDATE EXISTENCE
+		SET
+		UNLIKEPEOPLE = #{people},
+		UNLIKES = UNLIKES - 1
+		WHERE NO = #{no}
+	</update>
+</mapper>
+
+

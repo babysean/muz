@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring.baegopang.xml.boardReply">
+	<!-- 해당 게시판 댓글 가져오기 -->
+	<select id="selectAllBoardReply" parameterType="java.lang.Integer" resultType="boardReply">
+		SELECT NO, CONTENTS, REGDATE, PNUM, NICKNAME, PICTURE
+		FROM BOARDREPLY
+		WHERE PNUM = #{no}
+		ORDER BY REGDATE ASC
+	</select>
+	
+	<!-- 게시판 댓글 등록하기 -->
+	<insert id="insertBoardReply" parameterType="boardReply">
+		INSERT INTO BOARDREPLY
+		VALUES (seq_boardReply.nextval, #{contents}, SYSDATE, #{pnum}, #{nickname}, #{picture})
+	</insert>
+</mapper>
