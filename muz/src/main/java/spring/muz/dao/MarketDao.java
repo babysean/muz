@@ -6,16 +6,13 @@ import java.util.List;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
-import spring.muz.bean.BoardBean;
-import spring.muz.bean.DefaultBean;
 import spring.muz.bean.MarketBean;
-import spring.muz.bean.MuzBean;
 
 @Component(value = "marketDao")
 public class MarketDao extends SqlSessionDaoSupport implements Dao{
 	
 	@Override
-	public List<DefaultBean> paging(HashMap<Object, Object> map) {
+	public List<?> paging(HashMap<Object, Object> map) {
 		return null;
 	}
 	

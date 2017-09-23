@@ -93,7 +93,7 @@ public class MuzController {
 		mav.addObject("pageBean", new PageBean(currentPage, totalPage, startPage, endPage, currentBlock));
 	}
 	
-	/* 텍스트 띄어쓰기, 개행 문자로 바꿔주기 */
+	/* 띄어쓰기, 개행 문자를 HTML이 읽을 수 있는 언어로 바꿔주기 */
 	public String changeDbContents(String contents) {
 		// 개행
 		contents = contents.replaceAll("\r\n","<br>");

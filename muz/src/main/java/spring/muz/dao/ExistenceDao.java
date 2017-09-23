@@ -7,7 +7,6 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
 import spring.muz.bean.BoardBean;
-import spring.muz.bean.DefaultBean;
 import spring.muz.bean.ExistenceBean;
 
 @Component(value = "existenceDao")
@@ -15,7 +14,7 @@ public class ExistenceDao extends SqlSessionDaoSupport implements Dao{
 	
 	/* existence 테이블 paging 후 가져오기 */
 	@Override
-	public List<DefaultBean> paging(HashMap<Object, Object> map) {
+	public List<?> paging(HashMap<Object, Object> map) {
 		try {
 			return this.getSqlSession().selectList("selectExistence", map);
 		} catch (Exception e) {

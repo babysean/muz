@@ -1,6 +1,6 @@
 package spring.muz.bean;
 
-public class MuzBean implements DefaultBean {
+public class MuzBean {
 	private String id;
 	private String pw;
 	private String name;

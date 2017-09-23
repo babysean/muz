@@ -1,6 +1,6 @@
 package spring.muz.bean;
 
-public class BoardBean implements DefaultBean {
+public class BoardBean {
 	private int no;
 	private String title;
 	private String writer;

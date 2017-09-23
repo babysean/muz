@@ -7,14 +7,13 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
 import spring.muz.bean.BoardBean;
-import spring.muz.bean.DefaultBean;
 
 @Component(value = "boardDao")
 public class BoardDao extends SqlSessionDaoSupport implements Dao{
 	
 	/* board 테이블 paging 후 가져오기 */
 	@Override
-	public List<DefaultBean> paging(HashMap<Object, Object> map) {
+	public List<?> paging(HashMap<Object, Object> map) {
 		try {
 			return this.getSqlSession().selectList("selectBoard", map);
 		} catch (Exception e) {
