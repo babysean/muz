@@ -42,6 +42,7 @@ $(function(){
 						</div>
 						<div class="col-md-12" style="padding: 70px 50px 50px 50px;">
 							<center>
+							
 							<c:if test="${user ne null}">
 								<div class="col-md-6">
 									<c:if test="${likePossible eq 'true'}">
@@ -94,6 +95,7 @@ $(function(){
 									</c:if>
 								</div>
 							</c:if>
+							
 							</center>
 						</div>
 					</div>
